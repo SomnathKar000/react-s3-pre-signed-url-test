@@ -26,8 +26,8 @@ const UploadImage = () => {
             fileName: file.name,
           }
         );
-        setUrl(response.data.message);
-        setResult(JSON.stringify(response.data.url));
+        setUrl(response.data.url);
+        setResult(JSON.stringify(response.data.fileName));
         console.log(response);
       } else {
         setResult("No file selected");
