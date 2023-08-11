@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import axios from "axios";
 import Button from "@mui/material/Button";
+import axios from "axios";
 
 const DownloadFile = () => {
   const [downloadUrl, setDownloadUrl] = useState<string>("");
@@ -11,6 +11,7 @@ const DownloadFile = () => {
   const onchange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFileName(e.target.value);
   };
+
   const onClick = async () => {
     try {
       const response = await axios.post(
@@ -30,29 +31,42 @@ const DownloadFile = () => {
       navigator.clipboard.writeText(downloadUrl);
     }
   };
+
   const viewPage = () => {
     if (downloadUrl) {
       window.location.href = downloadUrl;
     }
   };
+
   return (
-    <Box>
+    <Box mt={4} p={3} border="1px solid #ccc" borderRadius="8px">
       <TextField
         value={fileName}
-        label="Outlined"
-        onChange={onchange}
+        label="Enter File Name"
         variant="outlined"
+        fullWidth
+        onChange={onchange}
       />
-      <Button variant="contained" color="success" onClick={onClick}>
-        Get Url
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={onClick}
+        sx={{ mt: 2 }}
+      >
+        Get URL
       </Button>
       {downloadUrl && (
-        <Box>
-          <Button variant="contained" color="success" onClick={onViewClick}>
-            Copy
+        <Box mt={2}>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={onViewClick}
+            sx={{ mr: 2 }}
+          >
+            Copy URL
           </Button>
-          <Button variant="contained" color="warning" onClick={viewPage}>
-            View
+          <Button variant="contained" color="info" onClick={viewPage}>
+            View File
           </Button>
         </Box>
       )}
