@@ -4,7 +4,13 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import axios from "axios";
 
-const DownloadFile = () => {
+const DownloadFile = (props: {
+  createAlert: (
+    message: string,
+    type: "error" | "info" | "success" | "warning"
+  ) => void;
+}) => {
+  const { createAlert } = props;
   const [downloadUrl, setDownloadUrl] = useState<string>("");
   const [fileName, setFileName] = useState<string>("");
 
@@ -21,12 +27,14 @@ const DownloadFile = () => {
         }
       );
       setDownloadUrl(response.data.url);
+      createAlert("Successfully generated pre-signed URL", "success");
     } catch (error) {
+      createAlert("Error getting pre-signed URL", "error");
       console.log(error);
     }
   };
 
-  const onViewClick = () => {
+  const onCopyClick = () => {
     if (downloadUrl) {
       navigator.clipboard.writeText(downloadUrl);
     }
@@ -36,6 +44,11 @@ const DownloadFile = () => {
     if (downloadUrl) {
       window.location.href = downloadUrl;
     }
+  };
+
+  const clearFields = () => {
+    setFileName("");
+    setDownloadUrl("");
   };
 
   return (
@@ -60,13 +73,21 @@ const DownloadFile = () => {
           <Button
             variant="contained"
             color="success"
-            onClick={onViewClick}
+            onClick={onCopyClick}
             sx={{ mr: 2 }}
           >
             Copy URL
           </Button>
           <Button variant="contained" color="info" onClick={viewPage}>
             View File
+          </Button>
+          <Button
+            sx={{ marginLeft: 2 }}
+            variant="contained"
+            color="error"
+            onClick={clearFields}
+          >
+            Clear Fields
           </Button>
         </Box>
       )}
